@@ -6,6 +6,12 @@ export const userSchema = new mongoose.Schema(
     email: String,
     password: String,
     socketId: String,
+    friends: [
+      {
+        status: { type: Boolean, default: false },
+        friend: { type: mongoose.Types.ObjectId, ref: 'Usuarios' },
+      },
+    ],
   },
   { timestamps: true, collection: 'Usuarios' },
 );
