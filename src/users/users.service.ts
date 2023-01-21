@@ -24,12 +24,19 @@ export class UsersService {
     return await this.userModel.create(createUserDto);
   }
 
+  async login(email: string, password: string) {
+    const existUser = await this.userModel.findOne({ email });
+    // REMOVE PASSWORD OF RESPONSE.
+    delete existUser.password;
+    return { user: existUser, isAuth: existUser.password === password };
+  }
+
   async findAll() {
     return await this.userModel.find();
   }
 
   async findOne(id: string) {
-    return this.userModel.findOne({ _id: id });
+    return await this.userModel.findOne({ _id: id });
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
@@ -75,6 +82,7 @@ export class UsersService {
       );
     }
   }
+
   async acceptFriend(_id: string, friend: string) {
     const existUser = await this.userModel.findOne({ _id: friend });
 
@@ -99,6 +107,7 @@ export class UsersService {
     });
     await this.userModel.findByIdAndUpdate({ _id }, { $set: existThatAccept });
   }
+
   remove(id: string) {
     return `This action removes a #${id} user`;
   }

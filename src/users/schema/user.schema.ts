@@ -6,6 +6,7 @@ export const userSchema = new mongoose.Schema(
     email: String,
     password: String,
     socketId: String,
+    online: Boolean,
     friends: [
       {
         status: { type: Boolean, default: false },

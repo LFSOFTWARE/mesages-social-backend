@@ -25,6 +25,11 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @Post('/passport/login')
+  async login(@Body() login: { email: string; password: string }) {
+    return await this.usersService.login(login.email, login.password);
+  }
+
   @Post('/amizade')
   async requestFriend(@Body() requestFriendDto: RequestFriendDto) {
     await this.usersService.requestFriend(requestFriendDto);
