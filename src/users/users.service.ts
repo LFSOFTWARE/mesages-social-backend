@@ -38,7 +38,9 @@ export class UsersService {
   async findOne(id: string) {
     return await this.userModel.findOne({ _id: id });
   }
-
+  async findBySocket(scoket: string) {
+    return await this.userModel.findOne({ socketId: scoket });
+  }
   async update(id: string, updateUserDto: UpdateUserDto) {
     const userFind = await this.userModel.findOne({ _id: id });
 
@@ -107,7 +109,16 @@ export class UsersService {
     });
     await this.userModel.findByIdAndUpdate({ _id }, { $set: existThatAccept });
   }
+  async updateSocket(_id: string, socket: string) {
+    const userFind = await this.userModel.findOne({ _id });
 
+    if (!userFind) {
+      throw new BadRequestException(`User ${_id} não Existe`);
+    }
+
+    userFind.socketId = socket;
+    await this.userModel.findByIdAndUpdate({ _id }, { $set: userFind });
+  }
   remove(id: string) {
     return `This action removes a #${id} user`;
   }
